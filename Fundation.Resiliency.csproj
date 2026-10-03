@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    
+    <PackageId>Fundation.Resiliency</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Mehrdad Sohrabi</Authors>
+    <Description>Resilience policies for .NET applications, including retry, circuit breaker, and fallback behaviors for MediatR and HttpClient.</Description>
+    <PackageOutputPath>../Packages</PackageOutputPath>
+  
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ardalis.GuardClauses" Version="5.0.0" />
+    <PackageReference Include="Fundation.Abstractions" Version="1.0.0" />
+    <PackageReference Include="Fundation.Core" Version="1.0.0" />
+    <PackageReference Include="MediatR" Version="11.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.12" />
+    <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="10.10.0" />
+    <PackageReference Include="Polly" Version="8.8.0" />
+    <PackageReference Include="Scrutor" Version="7.0.0" />
+  </ItemGroup>
+  
+</Project>
