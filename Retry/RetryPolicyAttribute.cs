@@ -10,6 +10,8 @@ public class RetryPolicyAttribute : Attribute
 {
     private int _retryCount = 3;
     private int _sleepDuration = 200;
+    private int _exceptionsAllowedBeforeCircuitTrip = 1;
+    private int _circuitBreakDuration = 30;
 
     /// <summary>
     ///     Gets or sets the amount of times to retry the execution.
@@ -21,7 +23,7 @@ public class RetryPolicyAttribute : Attribute
         get => _retryCount;
         set
         {
-            if (value < 1) throw new ArgumentException("Retry count must be higher than 1.", nameof(value));
+            if (value < 1) throw new ArgumentException("Retry count must be at least 1.", nameof(value));
 
             _retryCount = value;
         }
@@ -37,9 +39,33 @@ public class RetryPolicyAttribute : Attribute
         get => _sleepDuration;
         set
         {
-            if (value < 1) throw new ArgumentException("Sleep duration must be higher than 1ms.", nameof(value));
+            if (value < 1) throw new ArgumentException("Sleep duration must be at least 1ms.", nameof(value));
 
             _sleepDuration = value;
+        }
+    }
+
+    public int ExceptionsAllowedBeforeCircuitTrip
+    {
+        get => _exceptionsAllowedBeforeCircuitTrip;
+        set
+        {
+            if (value < 1)
+                throw new ArgumentException("At least one exception must be allowed before the circuit trips.", nameof(value));
+
+            _exceptionsAllowedBeforeCircuitTrip = value;
+        }
+    }
+
+    public int CircuitBreakDuration
+    {
+        get => _circuitBreakDuration;
+        set
+        {
+            if (value < 1)
+                throw new ArgumentException("Circuit-break duration must be at least 1 second.", nameof(value));
+
+            _circuitBreakDuration = value;
         }
     }
 }

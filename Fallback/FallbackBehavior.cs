@@ -31,7 +31,14 @@ public class FallbackBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest,
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        var fallbackHandler = _fallbackHandlers.FirstOrDefault();
+        var fallbackHandlers = _fallbackHandlers.Take(2).ToArray();
+        if (fallbackHandlers.Length > 1)
+        {
+            throw new InvalidOperationException(
+                $"Multiple fallback handlers are registered for request type '{typeof(TRequest).FullName}'.");
+        }
+
+        var fallbackHandler = fallbackHandlers.FirstOrDefault();
         if (fallbackHandler == null)
 
             // No fallback handler found, continue through pipeline
@@ -40,7 +47,8 @@ public class FallbackBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest,
         var fallbackPipeline = new ResiliencePipelineBuilder<TResponse>()
             .AddFallback(new FallbackStrategyOptions<TResponse>
             {
-                ShouldHandle = new PredicateBuilder<TResponse>().Handle<Exception>(),
+                ShouldHandle = new PredicateBuilder<TResponse>()
+                    .Handle<Exception>(exception => exception is not OperationCanceledException),
                 FallbackAction = async args =>
                 {
                     _logger.LogDebug(

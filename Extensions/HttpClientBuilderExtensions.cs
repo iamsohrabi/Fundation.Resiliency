@@ -7,6 +7,7 @@ public static partial class HttpClientBuilderExtensions
         Func<IHttpClientBuilder, IHttpClientBuilder>? builder = null)
     {
         var result = httpClientBuilder
+            .AddTimeoutHandler()
             .AddRetryPolicyHandler()
             .AddCircuitBreakerHandler();
 

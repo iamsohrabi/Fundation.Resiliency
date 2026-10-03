@@ -9,4 +9,5 @@ public interface IRetryableRequest<TRequest, TResponse>
     int RetryDelay => 250;
     bool RetryWithExponentialBackoff => false;
     int ExceptionsAllowedBeforeCircuitTrip => 1;
+    int CircuitBreakDuration => 30;
 }
